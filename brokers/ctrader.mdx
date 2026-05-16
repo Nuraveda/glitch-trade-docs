@@ -1,0 +1,42 @@
+---
+title: "cTrader"
+description: "OAuth read-only. The trust-friendliest path."
+---
+
+The most trust-friendly path. You authorize a read-only connection through Spotware OAuth. We never see your password and **cannot place trades** on the account from our infrastructure.
+
+## When to pick it
+
+- You're starting fresh and want the cleanest permissions story
+- Your broker offers cTrader as a platform option (most do)
+- You're OK running the compiled `.algo` cBot on your own cTrader Desktop install for execution
+
+## How to connect
+
+<Steps>
+  <Step title="Open Settings">
+    In the app sidebar, click **Settings**.
+  </Step>
+  <Step title="Click Connect cTrader">
+    The browser opens Spotware's OAuth consent screen.
+  </Step>
+  <Step title="Authorize the connection">
+    Spotware shows the scopes we're requesting. Click **Authorize**.
+  </Step>
+  <Step title="Land back on Settings">
+    The page lists your connected cTrader accounts. From here, tag each one with a
+    firm in **Track** to enable Firm Mode.
+  </Step>
+</Steps>
+
+## What we get
+
+- Read-only access to your cTrader account list
+- Ability to read balance, equity, open positions, and recent deals via the Open API
+- A refresh token we use to keep the read access alive
+
+## What we don't get
+
+- Your cTrader password (we never see it)
+- Authority to place, modify, or close trades
+- Authority to withdraw funds or change account settings

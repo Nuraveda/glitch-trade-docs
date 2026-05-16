@@ -1,0 +1,48 @@
+---
+title: "Quick rules"
+description: "The natural-language grammar that turns a one-line trade idea into a deployable bot."
+---
+
+The textarea at **/app/quick** parses one-line natural-language rules into a structured Strategy IR. The IR is the contract between every layer of Glitch Trade — backtester, compiler, marketplace, linter — so a rule you type in plain English ends up identical to one a power user authored in code.
+
+## Patterns the parser understands
+
+```
+buy BTCUSD at 80000, sell at 81000
+sell EURUSD at 1.10, buy back at 1.09 with 0.5% risk
+long XAUUSD when price >= 2050, exit at 2080
+short JPN225 when price <= 38000, exit at 37500
+```
+
+## Optional size suffixes
+
+Append any of:
+
+- `with 0.01 units` — fixed-units sizing
+- `with 0.5 lots` — fixed-lots sizing
+- `with 0.5% risk` — risk per trade as a fraction of account equity
+
+## What the parser produces
+
+Behind the scenes the rule becomes a Strategy IR document — JSON describing the instrument, entry condition, exit condition, sizing, and any firm guards you've enabled. You can view the IR by saving the strategy and opening **Strategy IR (JSON)** on the detail page.
+
+## Honest limits
+
+Quick rules are **price-trigger style**: they have no stop-loss by default. The backtester surfaces this clearly when it detects hidden losses:
+
+<Warning>
+This rule has no stop-loss. N positions opened during the backtest are still open at end of period — capital frozen until price returns to the exit. Mark-to-market unrealised PnL: $X.
+</Warning>
+
+For strategies that need stops, partial take-profits, or trailing logic, use the visual builder or the code editor (both ship in later releases). Quick rules are the on-ramp.
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Firm Mode" icon="shield-halved" href="/concepts/firm-mode">
+    Add prop-firm rule guardrails to any quick rule.
+  </Card>
+  <Card title="Backtest" icon="flask" href="/concepts/backtest">
+    How the simulator works and how to read the result.
+  </Card>
+</CardGroup>

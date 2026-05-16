@@ -1,0 +1,39 @@
+---
+title: "Brokers overview"
+sidebarTitle: "Overview"
+description: "Read-only by default. Credentials handled with care."
+---
+
+Glitch Trade integrates with four broker protocols today. Each has a different trust posture; the Track tile shows the badge per account so you always know what the platform holds.
+
+<CardGroup cols={2}>
+  <Card title="cTrader" icon="lock" href="/brokers/ctrader">
+    OAuth read-only. Most trust-friendly path.
+  </Card>
+  <Card title="TradeLocker" icon="key" href="/brokers/tradelocker">
+    Username + password exchanged once for a refresh token, then discarded.
+  </Card>
+  <Card title="DXtrade" icon="key" href="/brokers/dxtrade">
+    Same credentialed pattern as TradeLocker.
+  </Card>
+  <Card title="MT4 / MT5 via MetaApi" icon="cloud" href="/brokers/mt4-mt5-via-metaapi">
+    Cloud-bridged. MetaApi.cloud holds the password, never our servers.
+  </Card>
+</CardGroup>
+
+## Trust posture, side by side
+
+| Connection | Badge | What we hold | Worst case if our DB leaks |
+|---|---|---|---|
+| **cTrader OAuth** | 🔐 OAuth (green) | Scoped refresh token, read-only by design | Read tape. Cannot trade or move funds. |
+| **TradeLocker / DXtrade** | 🔑 Creds (amber) | Encrypted refresh token only (password discarded) | Attacker would need to steal the refresh token AND our Fernet key |
+| **MT4 / MT5 via MetaApi** | 🌉 Cloud (blue) | Just the MetaApi accountId | Password is held encrypted at MetaApi, not on our servers |
+
+## What we never do
+
+- We don't trade on your behalf
+- We don't custody funds
+- We don't run automation server-side on customer accounts
+- We don't share account data outside your own dashboard
+
+Bots run on **your** machine (cTrader Desktop) or in your broker (when MetaApi-hosted execution lights up later for Pro Quant accounts). We make the tape legible — that's it.

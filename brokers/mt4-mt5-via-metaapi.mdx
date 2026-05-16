@@ -1,0 +1,60 @@
+---
+title: "MT4 / MT5 via MetaApi"
+sidebarTitle: "MT4 / MT5 via MetaApi"
+description: "Bridges any MetaTrader broker through MetaApi.cloud — without us ever holding your MT credentials."
+---
+
+MetaTrader 4 and MetaTrader 5 don't have public REST APIs. To bridge MT brokers (ICMarkets, Pepperstone, FTMO, MFF, GetLeveraged, etc.) into the Glitch Trade dashboard, we use **MetaApi.cloud** as the cloud gateway.
+
+## Why this is the safest credentialed path
+
+You never hand your MT password to Glitch Trade. The connect flow:
+
+1. You enter your MT login + password + broker server in our Connect dialog
+2. The platform forwards them **straight through to MetaApi.cloud** (no copy on our side)
+3. MetaApi provisions a hosted bridge to your broker
+4. We receive only the **MetaApi accountId** — the password lives encrypted in MetaApi's cloud
+
+Our database holds zero MT credentials. We can't, for example, log into your broker's web platform with what we have.
+
+## When to pick it
+
+- Your prop firm is MetaTrader-only (most legacy firms; many new ones still)
+- Your broker isn't on cTrader, TradeLocker, or DXtrade
+- You want to track challenges across MetaTrader brokers in the same dashboard
+
+## How to connect
+
+<Steps>
+  <Step title="Open Settings → Connect another broker → MT4 / MT5">
+    Four fields: **MT Login** (numeric), **Password**, **MT Server**, **Environment**.
+  </Step>
+  <Step title="Recommended: use the MT investor password">
+    MetaTrader supports two passwords per account — master (full access) and investor
+    (read-only). **Use the investor password.** Even MetaApi can't trade with it; the
+    broker rejects orders. This is defense in depth: if anything in the chain ever
+    misbehaves, your account stays safe.
+  </Step>
+  <Step title="Find your MT server name">
+    Look in your broker's account email or in the MT terminal under **File → Login to
+    Trade Account**. Examples: `ICMarketsSC-Demo`, `FTMO-Demo`, `GetLeveraged-Trade`.
+    The exact string matters.
+  </Step>
+  <Step title="Click Exchange & connect">
+    The platform provisions a MetaApi account; takes ~30–120 seconds for MetaApi to
+    establish the bridge. The Track tile shows the account once it's `DEPLOYED + CONNECTED`.
+  </Step>
+</Steps>
+
+## Trust posture
+
+🌉 **Cloud-bridged**. Your password is held encrypted at MetaApi (their disclosed
+security posture), not on our servers. We never see your MT password.
+
+## What "investor password" means in practice
+
+Some prop firms (e.g. The5ers, Apex) only issue a master password and don't expose an
+investor password by default. In that case the master password is what you'll provide
+— Glitch Trade still doesn't trade on the account (we only call MetaApi's read-state
+endpoints, not order-placement endpoints) but the safest theoretical posture isn't
+available until your broker exposes investor credentials.

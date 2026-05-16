@@ -1,0 +1,34 @@
+---
+title: "Firm Mode"
+description: "Pre-flight your strategy against the rule set of any supported prop firm — before you fund the challenge."
+---
+
+Firm Mode tags a connected account with a specific prop-firm rule set. The dashboard then renders breach gauges, payout countdowns, and consistency-rule headroom against that firm's actual limits. Same data as the regular Track view, reframed in the language of the challenge you're running.
+
+## Supported firms
+
+| Firm | Daily loss | Drawdown | Target | Notes |
+|---|---|---|---|---|
+| **FundingPips Zero** | 3% | 5% **trailing** | 4% | Hardest mainstream variant. Trailing DD ratchets with HWM. |
+| **FTMO Phase 1** | 5% | 10% **static** | 10% | Most forgiving DD. Static reference doesn't ratchet. |
+| **MyForexFunds** | 5% | 8% **static** | 8% | Middle ground. 5-day minimum trading. |
+| **Apex** | — | 3% **trailing** | 6% | No daily cap. Drawdown locks at +6% profit. |
+| **The5ers High Stakes** | 4% | 4% **static** | 8% | 6% cushion. 1% daily floor for consistency. |
+| **GetLeveraged Turbo** | 3% | 6% **trailing** | 6% | "Pass first, pay later." One phase, unlimited time. |
+
+## Trailing vs static drawdown
+
+The most important structural difference between firms — **and the one most likely to break a strategy that looks fine on paper**.
+
+- **Trailing DD** (FundingPips, GetLeveraged Turbo, Apex): the breach floor ratchets up as your equity high-water mark rises. Every 1% of profit tightens the buffer. A strategy with normal pullbacks can survive at the start and fail after a winning streak.
+- **Static DD** (FTMO, MFF, The5ers): the breach floor measures against the original starting balance forever. A 10% target on 10% static DD is a 1:1 risk-reward decision; same target on 5% trailing DD is much harder.
+
+Use Firm Mode to see which side of the line your strategy is on **before** you fund the challenge.
+
+## Where to enable it
+
+Open **Track** (the `/app` home), find the account row, pick the firm from the small dropdown in the tile footer. The breach gauges and payout countdown appear once tagged.
+
+<Tip>
+You can switch firms freely. Tagging an account with FundingPips Zero this week and FTMO next week doesn't lose any tracked history — the underlying tape stays the same; only the breach math reframes.
+</Tip>

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "Glitch Trade",
+  "description": "Run, test, and track AI trading automation. Prop-firm challenge tracking included. Connect cTrader / TradeLocker / DXtrade / MT4·MT5 via MetaApi, author rules in plain English or code, backtest against firm-rule guardrails, deploy to your account.",
+  "colors": {
+    "primary": "#00d177",
+    "light":   "#34e493",
+    "dark":    "#00a85e"
+  },
+  "favicon": "/favicon.png",
+  "logo": {
+    "light": "/logos/glitch-trade.png",
+    "dark":  "/logos/glitch-trade.png",
+    "href":  "https://trade.glitchexecutor.com/"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "getting-started/introduction",
+              "getting-started/quickstart",
+              "getting-started/quick-rules"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "concepts/firm-mode",
+              "concepts/strategies",
+              "concepts/backtest"
+            ]
+          },
+          {
+            "group": "Brokers",
+            "pages": [
+              "brokers/overview",
+              "brokers/ctrader",
+              "brokers/tradelocker",
+              "brokers/dxtrade",
+              "brokers/mt4-mt5-via-metaapi"
+            ]
+          },
+          {
+            "group": "Plans",
+            "pages": [
+              "plans/pricing"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      { "label": "App",     "href": "https://trade.glitchexecutor.com/app" },
+      { "label": "Pricing", "href": "https://trade.glitchexecutor.com/pricing" }
+    ],
+    "primary": {
+      "type":  "button",
+      "label": "Open the app",
+      "href":  "https://trade.glitchexecutor.com/app"
+    }
+  },
+  "footer": {
+    "socials": {
+      "x":      "https://x.com/glitchexecutor",
+      "github": "https://gitlab.com/glitch-exec-labs-group"
+    }
+  },
+  "fonts": {
+    "heading": { "family": "Inter Tight" },
+    "body":    { "family": "Inter Tight" }
+  }
+}

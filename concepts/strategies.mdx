@@ -1,0 +1,41 @@
+---
+title: "Strategies"
+description: "How Glitch Trade represents the rules you author and runs them on your accounts."
+---
+
+A **strategy** in Glitch Trade is a JSON document called a Strategy IR (intermediate representation). Every authoring surface — quick rule, visual builder, code editor — produces or consumes the same IR shape. The IR is what the backtester runs, what the compiler turns into a cBot, and what the marketplace lists.
+
+## Where strategies come from
+
+<CardGroup cols={3}>
+  <Card title="Quick rule" icon="wand-magic-sparkles" href="/getting-started/quick-rules">
+    One-line natural language. Parsed into a single-block IR.
+  </Card>
+  <Card title="Visual builder" icon="diagram-project">
+    Drag indicator/entry/exit nodes onto a DAG. Compiled to IR on save. (Beta)
+  </Card>
+  <Card title="Code editor" icon="code">
+    Author cAlgo C# directly with Glitch Trade's SDK + firm-rule linter. (Pro+ tier)
+  </Card>
+</CardGroup>
+
+## What the IR contains
+
+Every strategy IR has these sections:
+
+- **`instruments`** — symbol + timeframe pairs (e.g. `EURUSD` / `h1`)
+- **`indicators`** — optional named indicators (SMA, EMA, ADX, ATR, RSI, MACD, BB, Stoch, VWAP)
+- **`entries`** — when to open a position, which side, what size
+- **`exits`** — stop-loss, take-profit, partial TP, trailing, time stop, limit
+- **`sizing`** — risk-per-trade default
+- **`guards`** — optional firm-rule constraints (FundingPips, FTMO, MFF, Apex, The5ers, GetLeveraged)
+
+## Forking + marketplace
+
+Public strategies can be **forked** by anyone — copies the IR into your own account so you can edit. Authors can publish strategies to the marketplace with a one-time price or subscription; the platform takes 30%, the author keeps 70%.
+
+Marketplace ranking is **anti-self-report**: pass-rates are computed from the author's own tracked accounts, not from claims. A strategy can't lie about its track record.
+
+## What strategies are not
+
+A strategy is the rule, not the trade. Glitch Trade does not place trades on your account — the compiled cBot does, running on your machine or via cTrader Automate (later: MetaApi-hosted execution for MT4/MT5 accounts on Pro Quant). You stay in control of the execution path.

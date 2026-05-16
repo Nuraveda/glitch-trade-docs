@@ -1,0 +1,68 @@
+---
+title: "Quickstart"
+description: "From sign-in to a deployed quick rule in under five minutes."
+---
+
+The shortest path from zero to a running automation on your own account.
+
+<Steps>
+  <Step title="Sign in">
+    Open [trade.glitchexecutor.com/app](https://trade.glitchexecutor.com/app). Sign in
+    with Google (one click) or your existing Glitch Executor SSO account. There's no
+    separate signup form — single sign-on across the Glitch Executor surface.
+  </Step>
+
+  <Step title="Connect a broker">
+    Open **Settings** in the sidebar.
+
+    Pick the connection style that matches your trust preference:
+
+    - **cTrader** — most trust-friendly. OAuth, read-only.
+    - **TradeLocker** / **DXtrade** — username + password exchanged once for a refresh
+      token; the password is discarded immediately.
+    - **MT4 / MT5 via MetaApi** — bridges any MetaTrader broker (ICMarkets, Pepperstone,
+      FTMO, MyForexFunds, GetLeveraged) through MetaApi.cloud.
+
+    See [Brokers](/brokers/overview) for the per-integration trust posture.
+  </Step>
+
+  <Step title="Author a quick rule">
+    Open **Quick rule** and type a one-liner:
+
+    ```
+    buy BTCUSD at 80000, sell at 81000
+    ```
+
+    The platform parses it into a structured Strategy IR. Pick the firm + account size
+    you want to test against, click **Backtest**.
+  </Step>
+
+  <Step title="Review the backtest">
+    The result tile shows verdict (PASSES / TERMINATED / alive), total return, max
+    daily loss, trades closed, ending balance, and HWM. If the rule has no stop-loss,
+    a red banner warns about hidden losses ([why](/concepts/backtest)).
+  </Step>
+
+  <Step title="Deploy to cTrader">
+    Save the strategy. Click **Download .cs**. The platform compiles your rule into
+    a cAlgo cBot. Open cTrader Desktop, drag the `.cs` file into the Automate panel,
+    click **Add → Start** on your account. Done.
+  </Step>
+
+  <Step title="Watch it on Track">
+    Back in the app, the **Track** view (the `/app` home) shows every connected account
+    with live balance, day P&L, drawdown, and — if you've tagged the account with a
+    firm — breach distance. Refreshes every 30 seconds.
+  </Step>
+</Steps>
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Quick rules — the full grammar" icon="wand-magic-sparkles" href="/getting-started/quick-rules">
+    Every pattern the parser accepts.
+  </Card>
+  <Card title="Firm Mode — what the gauges mean" icon="shield-halved" href="/concepts/firm-mode">
+    Trailing vs static drawdown, payout countdowns, consistency rules.
+  </Card>
+</CardGroup>

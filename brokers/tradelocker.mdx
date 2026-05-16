@@ -1,0 +1,38 @@
+---
+title: "TradeLocker"
+description: "Username + password exchanged once for a refresh token, then the password is discarded."
+---
+
+TradeLocker is what FundingPips, OneUp, and several newer prop firms use as their primary platform. Glitch Trade connects via TradeLocker's public REST API.
+
+## When to pick it
+
+- Your prop firm uses TradeLocker (most commonly: **FundingPips**)
+- You don't have a cTrader account for the same broker
+
+## Trust posture
+
+Username + password exchanged **once** for a refresh token, then the password is discarded from memory. Only the encrypted refresh token survives in our database. The encryption key is derived from a server-side master secret, not from anything in the database itself.
+
+You can disconnect any time from the app's **Settings** page. Disconnecting wipes the encrypted token; the account row stays so historical tracking data isn't lost.
+
+## How to connect
+
+<Steps>
+  <Step title="Open Settings → Connect another broker → TradeLocker">
+    Three fields: **Email**, **Password**, **Server**.
+  </Step>
+  <Step title="Find your TradeLocker server name">
+    Open your prop firm's account email or dashboard — it shows a server name like
+    `OSP-DEMO` or `OSP-LIVE`. Pick **Demo** or **Live** to match the account.
+  </Step>
+  <Step title="Click Exchange & connect">
+    The platform calls TradeLocker's `/auth/jwt/token` endpoint, gets a refresh token,
+    encrypts it, and discards the password. A toast confirms how many sub-accounts
+    came through.
+  </Step>
+</Steps>
+
+## After connecting
+
+The account appears on **Track** with a 🔑 **Creds** badge. Tag it with the right firm (usually **FundingPips Zero**) to enable Firm Mode.

@@ -1,0 +1,38 @@
+---
+title: "DXtrade"
+description: "Same credentialed pattern as TradeLocker. Live integration in progress."
+---
+
+DXtrade is what FTMO and several mid-size prop firms use. Glitch Trade's DXtrade adapter follows the same pattern as TradeLocker: username + password exchanged once for a refresh token, password discarded.
+
+<Note>
+The DXtrade adapter is wired and listed in the Connect dialog, but the actual upstream
+endpoints are pending the official DXtrade REST docs. The Connect button surfaces a
+clear "DXtrade integration coming soon" message until the adapter is filled in.
+Subscribe to release notes for the launch date.
+</Note>
+
+## When to pick it
+
+- Your prop firm uses DXtrade (most commonly: **FTMO**)
+- You don't have a cTrader account for the same broker
+
+## Trust posture
+
+Identical to TradeLocker. Username + password exchanged once, refresh token encrypted at rest, password discarded immediately. Disconnect from **Settings** to wipe.
+
+## How to connect (when live)
+
+<Steps>
+  <Step title="Open Settings → Connect another broker → DXtrade">
+    Three fields: **Username**, **Password**, **Domain**.
+  </Step>
+  <Step title="Find your DXtrade domain">
+    Your prop firm's onboarding email lists it — usually `demo.dx.trade` or
+    `live.dx.trade` (sometimes prefixed with a firm-specific shard).
+  </Step>
+  <Step title="Click Exchange & connect">
+    The platform exchanges the credentials for a session + refresh token, encrypts
+    the refresh token, and discards the password.
+  </Step>
+</Steps>

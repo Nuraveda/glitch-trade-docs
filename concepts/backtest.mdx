@@ -1,0 +1,66 @@
+---
+title: "Backtest"
+description: "How the historical-bars simulator works and how to read the result."
+---
+
+Glitch Trade's backtester replays your strategy against historical bars from `glitch-trade-core`'s bar database (currently 6 symbols × ~3 years of H1 data). Same engine the platform uses internally for the walk-forward HPO sweeps that produced the seed strategies — exposed in the UI as a one-click run.
+
+## How it works
+
+For each historical bar in your selected window, the simulator:
+
+1. Updates indicators
+2. Evaluates entry/exit conditions from the strategy IR
+3. Walks open positions through the bar's high/low for stop/TP fills
+4. Records every closed trade
+5. Tracks daily-state for breach math against the assigned firm rule set
+
+Result is a single dict with verdict, total return, max day loss, trades closed, profitable days, ending balance, HWM, and (for quick rules with no stop-loss) `pending_positions` + `unrealised_pnl` + a `warnings` array.
+
+## Reading the result
+
+<AccordionGroup>
+  <Accordion title="Verdict">
+    `PASSES` means the strategy hit the firm's profit target without breach.
+    `TERMINATED (breach)` means it hit a hard rule (daily loss / trailing DD / static DD).
+    `Alive — not yet at target` means it survived the window but didn't reach the target.
+  </Accordion>
+  <Accordion title="Total return %">
+    Realised PnL as a fraction of starting balance. Includes only closed trades.
+    Open positions at end-of-window aren't counted (see `unrealised_pnl` below).
+  </Accordion>
+  <Accordion title="Max day loss">
+    The worst single-day realised PnL during the window, as a fraction of starting
+    balance. Compare against the firm's daily loss limit for breach distance.
+  </Accordion>
+  <Accordion title="Trades closed">
+    Number of round-trip trades that completed. Open positions are NOT counted here.
+  </Accordion>
+  <Accordion title="Pending positions / unrealised PnL">
+    If your strategy has no stop-loss (most quick rules) and a position opened but
+    never reached the exit, it's still open at end of period. The simulator counts
+    that as "pending" and marks it to market against the last close. Hidden losses
+    show up here.
+  </Accordion>
+</AccordionGroup>
+
+## Honest-backtest warnings
+
+The simulator surfaces warnings when the result is artificially clean for known reasons:
+
+<Warning>
+This rule has no stop-loss. N positions opened during the backtest are still open at
+end of period — capital frozen until price returns to the exit. Mark-to-market
+unrealised PnL: $X.
+</Warning>
+
+<Warning>
+0% max day loss only because the rule has no stop-loss — losing positions never close
+and don't count against the daily-loss meter. Add a stop to stress-test honestly.
+</Warning>
+
+When you see these, don't trust the verdict. Add a stop-loss, partial-TP, or time-stop and re-run.
+
+## Walk-forward (Pro+ tier)
+
+Pro+ unlocks **walk-forward validation**: an Optuna sweep with train/test split. Pre-empts overfitting — a config that wins on training data but breaches on holdout is exposed before you fund a challenge. The platform's seed templates were chosen this way.

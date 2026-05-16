@@ -1,0 +1,8 @@
+# Draft content
+drafts/
+*.draft.mdx
+
+# Project-meta
+AGENTS.md
+README.md
+.gitignore
