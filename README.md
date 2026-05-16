@@ -2,7 +2,7 @@
 
 Mintlify-powered documentation site for **Glitch Trade**, the AI trading automation platform at <https://trade.glitchexecutor.com>.
 
-Lives at <https://docs.trade.glitchexecutor.com> (configure custom domain in the Mintlify dashboard once the space is live; the default `trade.mintlify.app` works in the meantime).
+Lives at <https://trade.glitchexecutor.com/docs> — same-origin under the Trade app, served via a Cloudflare Pages Function (`functions/docs/[[path]].ts` in `glitch-trade-app`) that proxies to the Mintlify origin `glitchexecutorlab.mintlify.dev`. Same-origin keeps analytics, cookies, and CSP trivial.
 
 ## Local preview
 
