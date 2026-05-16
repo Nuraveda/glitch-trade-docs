@@ -1,0 +1,68 @@
+---
+title: "MetaApi internals"
+description: "What MetaApi actually does under the hood when Glitch Trade routes an MT4/MT5 order through it — regional endpoints, terminal lifecycle, failure modes, cost model."
+---
+
+MetaApi is a cloud bridge for MT4/MT5 accounts. From the operator's perspective it's "API access to a broker that only exposes MT4 / MT5." From the platform side, MetaApi runs a managed MT terminal in their cloud and brokers your orders through it. Understanding the lifecycle matters for failure-mode planning.
+
+## What MetaApi runs
+
+When you connect an MT4/MT5 account via MetaApi:
+
+1. MetaApi spins up a managed MT4 or MT5 terminal in their cloud (regional — typically the closest of: us-east, eu-west, ap-southeast).
+2. The terminal logs in to your broker using your credentials (or refresh token).
+3. MetaApi exposes the terminal's state + order pipeline as a REST + WebSocket API.
+4. Glitch Trade orchestration calls the REST API; MetaApi forwards through the terminal to your broker.
+
+Net path: `Glitch Trade → MetaApi REST → MetaApi MT terminal → broker.`
+
+## Regional endpoints
+
+| Region | Endpoint | Best for brokers in |
+|---|---|---|
+| us-east-1 | `https://us-east-1.metaapi.cloud` | US, Canada |
+| eu-west-2 | `https://eu-west-2.metaapi.cloud` | EU, UK, Africa |
+| ap-southeast-1 | `https://ap-southeast-1.metaapi.cloud` | Australia, SEA, India |
+
+The endpoint determines two things: latency, and which broker servers MetaApi can reach efficiently. ICMarkets / Pepperstone live in Sydney → pair with ap-southeast. FTMO's broker stable is EU → pair with eu-west-2. Match your account's broker region to the MetaApi region for best RTT.
+
+## Terminal lifecycle
+
+```
+G1 plan (free): terminal sleeps after 1h idle, wakes on next API call (~10s cold start)
+G2 plan ($15/mo): terminal always-on
+G3 plan ($30/mo): always-on + cBot/EA hosting alongside the API
+```
+
+Operators running active strategies during specific sessions (London open only, for example) can use G1 with a wake-up call before the session — but the 10-second cold start can miss the open. G2 is the practical minimum for any live deployment.
+
+## Failure modes
+
+| Failure | Frequency | Mitigation |
+|---|---|---|
+| Regional MetaApi outage | Rare (~1×/quarter) | Open positions stay at broker; new orders block |
+| Broker-side login expiry | Per-account, ~30 days | Refresh credential via MetaApi UI |
+| Terminal restart (deploy) | Weekly (G1), monthly (G2+) | <5s — strategy resumes |
+| Order rejection (margin, spread) | Per-trade | Bubble up to operator; not a MetaApi issue |
+| Slow API during volatility | NFP / FOMC days | Cache market state; size in advance |
+
+MetaApi's published SLA is 99.9% — ~43 minutes of downtime per month. The risky part isn't the average; it's that outages correlate with high-volatility sessions (more API load).
+
+## Cost model
+
+```
+G1 free  — single demo or 1 idle live account, sleeps after 1h
+G2 $15/mo — live trading on one always-on account
+G3 $30/mo — adds cBot/EA hosting in MetaApi cloud
+Enterprise — multi-account at scale
+```
+
+Per-account pricing crosses over a same-region VPS (~$10–$30/mo) at 3+ accounts. Single-account operators with low latency needs often prefer broker-direct EA on a VPS; multi-account or cloud-deployed operators prefer MetaApi.
+
+## What MetaApi is NOT
+
+- **Not a broker.** Your account is with your broker (ICMarkets, FTMO's broker, etc). MetaApi is a relay.
+- **Not a replacement for OAuth.** cTrader's OpenAPI lets you skip MetaApi entirely — same-broker direct.
+- **Not exempt from firm policy.** Most firms permit MetaApi routing; a small set (Apex via NinjaTrader/Tradovate doesn't apply) ban third-party order-relay services. Verify before deploying.
+
+See related: [broker bridge latency](/concepts/broker-bridge-latency), [MT4/MT5 via MetaApi](/brokers/mt4-mt5-via-metaapi).

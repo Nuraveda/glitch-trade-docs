@@ -1,0 +1,57 @@
+---
+title: "Payout cycles"
+description: "Weekly, bi-weekly, and on-demand payout cadences across supported firms — and why cadence interacts with the consistency rule, scaling plans, and operator cash-flow planning."
+---
+
+Payout cadence is the time between when you can withdraw funded profit. It's not a minor detail — cadence interacts with the [consistency rule](/concepts/consistency-rule), the [scaling plan](/concepts/scaling-plans), and the operator's own cash flow.
+
+## Cadences across supported firms
+
+| Firm | Cadence | Notes |
+|---|---|---|
+| FundingPips Zero | Bi-weekly (14 days) | First payout after passing eval + 7 trading days |
+| FTMO Phase 1 | Monthly (funded) | 30 days after first profitable day on funded |
+| MyForexFunds | Bi-weekly | Post-relaunch; verify before scaling |
+| Apex Trader Funding | Weekly (funded) | 5 days minimum from request to payout |
+| The5ers High Stakes | On-demand | Request any time; settlement within 24h |
+| GetLeveraged Turbo | Bi-weekly | Available 14 days after first funded profitable day |
+
+## Why on-demand matters for some operators
+
+On-demand payouts (The5ers in our supported set) are uniquely useful for:
+
+- **News and event traders.** Lock in an oversized win the same day it happens, before the consistency rule can void the cycle.
+- **Swing traders with lumpy profit.** A 4R thesis trade closes Tuesday; cash it out Wednesday rather than waiting for the bi-weekly window.
+- **Operators who want to compound off-account.** Reinvesting elsewhere needs the cash sooner.
+
+The trade-off: on-demand-payout firms tend to have stricter consistency rules to compensate (The5ers has the most generous 50% threshold but enforces it harder).
+
+## Cadence × consistency rule interaction
+
+The longer the payout cycle, the more time for one outlier day to dominate the cycle profit. A 14-day cycle with one 5R day and thirteen 0.5R days has the 5R day at ~43% of total profit. A 30-day cycle with the same distribution drops to ~28%. So the consistency rule effectively tightens on longer cycles even at the same percentage threshold.
+
+Firms with longer cycles (FTMO monthly) typically don't enforce consistency in eval to compensate; firms with shorter cycles (FundingPips bi-weekly) enforce it strictly.
+
+## Cadence × scaling plan interaction
+
+Most firms scale account size on consistent profitable cycles (e.g., 10% profit in two consecutive cycles → +25% account size). The cadence determines how fast scaling happens:
+
+- Weekly cadence: scale every 2 weeks.
+- Bi-weekly: every 4 weeks.
+- Monthly (FTMO): every 2 months.
+- On-demand: typically gated on calendar quarters, not on payouts directly.
+
+For operators planning to scale into a significant account, the cadence determines the runway.
+
+## Operator workflow
+
+```
+Day 0   : Pass eval → funded
+Day 1   : Compute next-eligible payout date from cadence
+Day N   : Request payout when eligible
+Day N+5 : Cash arrives (typical for weekly/bi-weekly)
+```
+
+On Glitch Trade, the **payout estimator** at [/tools/payout-estimator](https://trade.glitchexecutor.com/tools/payout-estimator) projects the next payout date + after-split amount given firm cadence and current profit.
+
+See related: [consistency rule](/concepts/consistency-rule), [scaling plans](/concepts/scaling-plans).

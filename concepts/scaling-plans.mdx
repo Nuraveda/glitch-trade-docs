@@ -1,0 +1,59 @@
+---
+title: "Scaling plans"
+description: "How prop firms scale account size on consistent profitability — and the gotchas (drawdown resets, target re-anchoring, fee timing) that catch operators off-guard."
+---
+
+Once funded, most firms scale account size based on cumulative profit. The scaling logic varies; the gotchas are universal.
+
+## How scaling works generally
+
+```
+Trigger: cumulative_profit_pct ≥ scaling_threshold (per firm)
+       + consistency_rule_satisfied
+       + minimum_cycles_at_current_size
+Result: account_size × (1 + scaling_multiplier)
+```
+
+A $100,000 funded account that hits 10% profit (= $10,000) and satisfies the firm's other gates scales to $125,000 (typical 25% step). The trader keeps the realised $10k profit; future trading runs on the larger balance.
+
+## Per-firm summary
+
+| Firm | Trigger | Multiplier | Notes |
+|---|---|---|---|
+| FundingPips Zero | 10% profit + 2 cycles | +25% | Requires consistency in cycle |
+| FTMO | 10% profit (monthly) | +25% | "Scaling Plan" — opt-in |
+| MyForexFunds | 8% profit + 4 cycles | +20% | Post-relaunch; verify timing |
+| Apex Trader Funding | Tier-based by profit milestone | varies | Multi-tier ladder |
+| The5ers High Stakes | 10% milestone | +50% | Aggressive scaling |
+| GetLeveraged Turbo | 10% profit + 2 weeks | +25% | Bi-weekly cycle |
+
+## The hidden gotchas
+
+### Drawdown reference resets
+
+After scaling, the new account size becomes the reference for both static (FTMO) and trailing (FundingPips) drawdown. If the account scales from $100k to $125k, the drawdown floor on FTMO Phase 1 resets to $112,500 (10% of new size). Operators who don't re-compute their position sizing on the new scale risk over-leveraging into a tighter dollar-cushion.
+
+### Profit target re-anchoring
+
+For firms that re-issue a profit target after scaling (FundingPips, GetLeveraged), the target locks in based on the new size. The next scaling trigger is 10% of the new $125k, not 10% of the original $100k. This is fine math, just easy to miss when projecting next-scale runway.
+
+### Fee + cost timing
+
+Some firms charge a "scaling fee" at the moment of size increase ($50–$200 typical). The fee deducts from realised profit, not from the new balance, so the operator effectively pays for the scaling out of their cashable profit.
+
+### Consistency rule still applies
+
+Hitting the scaling threshold doesn't override the consistency rule. A 10% profit cycle dominated by one outlier day can satisfy the scaling trigger but fail the consistency check, halting scaling. Operators chasing scaling milestones often end up over-sizing on the days that count toward consistency.
+
+## Operator workflow for scaling
+
+1. **Plan the runway.** Compute (target_size − current_size) ÷ realistic_monthly_return → months to target.
+2. **Don't chase the scale.** Trading bigger to hit the threshold faster usually breaches consistency or drawdown.
+3. **Re-run position sizing at every scale.** New account size = new dollar-cushion = different lot sizes. Use [/tools/position-sizing-firm-mode](https://trade.glitchexecutor.com/tools/position-sizing-firm-mode).
+4. **Verify drawdown rules post-scale.** Some firms preserve the original DD percentage; some tighten on scaled accounts. Check the firm's scaling-plan document directly.
+
+## What scaling is NOT solving
+
+Scaling solves capital efficiency; it doesn't solve edge. A strategy with negative expectancy that gets lucky to hit the scaling threshold simply hits a larger DD floor on the larger account. Scale only when your historical performance on the current size is reproducible.
+
+See related: [drawdown math](/concepts/drawdown-math), [payout cycles](/concepts/payout-cycles), [consistency rule](/concepts/consistency-rule).

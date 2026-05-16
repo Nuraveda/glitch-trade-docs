@@ -32,7 +32,17 @@
             "pages": [
               "concepts/firm-mode",
               "concepts/strategies",
-              "concepts/backtest"
+              "concepts/backtest",
+              "concepts/drawdown-math",
+              "concepts/consistency-rule",
+              "concepts/payout-cycles",
+              "concepts/scaling-plans",
+              "concepts/news-blackouts",
+              "concepts/weekend-holding",
+              "concepts/ea-rules",
+              "concepts/copy-trading-mode",
+              "concepts/broker-bridge-latency",
+              "concepts/metaapi-internals"
             ]
           },
           {

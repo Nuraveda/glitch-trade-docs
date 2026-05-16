@@ -1,0 +1,43 @@
+---
+title: "Consistency rule"
+description: "The single-day or single-trade share-of-profit cap that voids more payouts than the drawdown rule does. Per-firm thresholds, why it bites scalpers and news-traders hardest, and the operational fix."
+---
+
+The consistency rule is a payout gate, not a hard breach. Your account stays open, you can keep trading, you just don't get paid for the cycle the rule fires in. This is why it disqualifies more payouts than the drawdown rule — drawdown busts the account explicitly, consistency rules silently void the payout.
+
+## How it works
+
+Every firm phrases it differently. The underlying shape:
+
+```
+worst_day_or_trade_profit ÷ total_cycle_profit ≤ threshold
+```
+
+Cycle = the period between payouts (a payout cycle, typically 7–14 days, on-demand at The5ers). Worst day = the largest single-day net profit during the cycle. If worst-day share exceeds the threshold, the payout for that cycle is denied — the account stays funded, but the cycle's profit moves to the next cycle, where it's diluted by the next cycle's runs.
+
+## Thresholds by firm
+
+| Firm | Threshold | Window | Failure mode |
+|---|---|---|---|
+| FundingPips Zero | 15% | Payout cycle | Strictest. One outlier day voids the cycle. |
+| FTMO Phase 1 | (none in eval) | — | Payout review on funded; "dominant source" test |
+| MyForexFunds | 20% | Payout cycle | Mid-strict; relaunch context |
+| Apex Trader Funding | 30% (single-trade) | Per-trade | Per-trade not per-day |
+| The5ers High Stakes | 50% | Cycle (on-demand) | Most generous; pairs with on-demand cycle |
+| GetLeveraged Turbo | 20% | Payout cycle | Mid-strict |
+
+## Why it bites scalpers and news-traders hardest
+
+Scalping strategies that have one outlier session (a London-open momentum run-up that delivers 4R while normal days deliver 0.5R) breach consistency cleanly. News traders are even more exposed — event-driven strategies inherently concentrate profit on event days. A 5R NFP winner can easily land 30%+ of cycle profit at FundingPips, voiding the payout.
+
+ICT/SMC and swing traders are less affected because their profit distribution is naturally flatter — fewer trades, larger holding windows, profit spread across multiple days as the structure plays out.
+
+## The operational fix
+
+Three workarounds, in order of preference:
+
+1. **Cap intraday risk + position size.** If your biggest possible day at full position sizing is < 15% of typical cycle profit, the rule can't fire.
+2. **Cash out before the rule reviews.** On-demand payout firms (The5ers) let you take a payout immediately after an oversized day, locking in the gain before the threshold check.
+3. **Pair with a firm where the rule doesn't bite.** FTMO doesn't enforce consistency in eval; The5ers has the most generous threshold; switch the high-variance strategy to one of those.
+
+See related: [drawdown math](/concepts/drawdown-math), [payout cycles](/concepts/payout-cycles), [news blackouts](/concepts/news-blackouts).

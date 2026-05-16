@@ -1,0 +1,55 @@
+---
+title: "Weekend holding"
+description: "Which firms permit weekend holds, the swap-cost math, and the gap-risk scenarios that bust accounts on Sunday-evening open."
+---
+
+Weekend holding policy varies by firm, instrument, and account stage. The rules matter most for swing traders + multi-day algos; scalpers rarely hit weekend exposure.
+
+## Firm-by-firm policy
+
+| Firm | Weekend hold | Swap charged | Gap-risk on trailing DD |
+|---|---|---|---|
+| FundingPips Zero | Permitted | Standard broker swap | Trailing DD: floor moves over the gap |
+| FTMO Phase 1 | Permitted | Standard broker swap | Static DD: floor unchanged across weekend |
+| MyForexFunds | Permitted | Standard broker swap | Static DD: same as FTMO |
+| Apex Trader Funding | Restricted (futures) | N/A — futures don't swap | Trailing DD: futures gap differently |
+| The5ers High Stakes | Permitted | Standard broker swap | Static DD: floor unchanged |
+| GetLeveraged Turbo | Permitted | Standard broker swap | Trailing DD: floor moves |
+
+## The gap-risk problem on trailing-DD firms
+
+A trader holds USDJPY over a weekend on a FundingPips Zero account. The Friday close is 150.40 with the account balance at $108,000 (trailing DD floor: $102,600). Sunday-evening reopen, an unexpected BOJ statement gaps USDJPY to 149.50 — 90 pips against the position. At a 0.5-lot size, that's a $450 loss. The new closed balance is $107,550. The trailing DD floor is unchanged (it only moved up on prior peaks, doesn't move down). But the operator's account is now $4,950 above the floor — uncomfortably close.
+
+Worst case: the gap is large enough to immediately breach the daily-loss cap on Monday open. FundingPips' 3% daily cap on $108k is $3,240. A 90-pip gap on a 1.0-lot USDJPY position ($900 loss) is fine; a 90-pip gap on 4.0 lots ($3,600) breaches the daily cap on Monday.
+
+## Swap cost math
+
+For multi-night holds, swap is a real cost. Typical EURUSD long swap on a prop-firm broker: $-2 to $-5 per night per standard lot. Triple-swap Wednesday night (banks settle Friday for spot-FX, so Wednesday→Thursday gets 3 nights of swap). A 5-day swing on 1.0 lot EURUSD pays $20–$40 in swap, against a typical 30-pip move = $300 profit. Swap eats 7–13% of the gross.
+
+Some firms (Apex on futures contracts) don't have swap because the instrument settles overnight without rollover.
+
+## Operational planning
+
+Three workflows for swing traders:
+
+### 1. Close-and-reopen (most common)
+
+Flatten Friday afternoon, reopen Sunday/Monday at market price. Accepts the loss of Friday-close-to-Monday-open profit drift; eliminates gap risk + swap cost. Conservative; most swing systems use this.
+
+### 2. Hold-with-tight-stops
+
+Keep position open through weekend with a stop-loss tightened to 1.5R of typical gap risk. Captures Friday-to-Monday drift on the upside; bounded loss on the downside.
+
+### 3. Hedge into the weekend
+
+Open an offsetting position on a correlated instrument (long EURUSD + long DXY, for example) to flatten directional exposure across the weekend. Costs spread on both positions; eliminates gap risk.
+
+## How Glitch Trade encodes this
+
+The Strategy IR has a `schedule.weekendFlat` boolean (default true). When true, the compiled cBot/EA closes all open positions by Friday 16:00 EST and refuses new entries after Friday 12:00 EST. Combine with `schedule.holidayFlat` to avoid holding through known market holidays (US Independence Day, UK Bank Holidays, etc.) where the same gap-risk logic applies.
+
+## What this rule is NOT solving
+
+It's not solving "I want to hold positions for weeks." Multi-week holds at any prop firm are dominated by either swap costs or by the eval-stage time limit (where present). Long-term strategies belong on self-funded accounts, not prop challenges.
+
+See related: [drawdown math](/concepts/drawdown-math), [payout cycles](/concepts/payout-cycles), [news blackouts](/concepts/news-blackouts).

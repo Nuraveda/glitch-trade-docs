@@ -1,0 +1,53 @@
+---
+title: "Drawdown math"
+description: "Trailing vs static drawdown, how the floor moves, and the equity-curve scenarios where each is stricter. The exact formula every firm uses + the per-firm reference value."
+---
+
+Every supported firm imposes a drawdown cap, but the formula isn't the same. Two pieces matter: the **percentage** (5%, 8%, 10%) and the **reference** (anchored to starting balance, or anchored to the highest balance reached). The reference is what makes the same percentage feel different in practice.
+
+## Static drawdown
+
+```
+floor = starting_balance × (1 − drawdown_pct)
+```
+
+Once the eval starts, the floor never moves. A $100,000 account at FTMO Phase 1 has a floor at $90,000 from day one. The trader can lose $10,000, recover, win $5,000, draw down again, recover — the floor is always $90,000.
+
+**Used by:** FTMO Phase 1, MyForexFunds, The5ers High Stakes.
+
+## Trailing drawdown
+
+```
+floor = max(starting_balance, current_high_balance) × (1 − drawdown_pct)
+```
+
+The floor follows your highest closed-day balance. Every time a new high is set, the floor re-anchors. A $100,000 FundingPips Zero account that grows to $108,000 has its floor re-anchor to $108,000 × 0.95 = $102,600. The trader can no longer go below $102,600 without busting — even though they've earned $8,000.
+
+**Used by:** FundingPips Zero, Apex Trader Funding, GetLeveraged Turbo.
+
+## When each is stricter
+
+Static is stricter on accounts that draw down deep early. If you bust to $93,000 in week 1, FTMO is closer to its floor than FundingPips is (FundingPips' floor hasn't moved from $95,000 yet).
+
+Trailing is stricter on profitable accounts. The moment you turn profit, the trailing floor moves up; subsequent retraces are penalised harder.
+
+Per-firm reference:
+
+| Firm | % | Reference | Floor on $100k profitable to $108k |
+|---|---|---|---|
+| FundingPips Zero | 5% | Trailing | $102,600 |
+| FTMO Phase 1 | 10% | Static | $90,000 |
+| MyForexFunds | 8% | Static | $92,000 |
+| Apex Trader Funding | 5% | Trailing | $102,600 |
+| The5ers High Stakes | 10% | Static | $90,000 |
+| GetLeveraged Turbo | 6% | Trailing | $101,520 |
+
+## Intraday vs end-of-day
+
+For trailing-DD firms, when the floor moves matters. Every firm in the supported set uses **end-of-day closed balance** to re-anchor, not intraday peak. An open trade that spikes to $110,000 mid-day and closes at $107,000 won't move the FundingPips floor — only the $107,000 close does. This means an open trade that's deeply in profit but not yet closed isn't ratcheting the floor on you.
+
+## The strategy-side fix
+
+Both rule types are fightable with conservative position sizing — never let a single trade lose more than ⅓ of the DD cushion. On Glitch Trade, the **firm-mode position sizing** calculator at [/tools/position-sizing-firm-mode](https://trade.glitchexecutor.com/tools/position-sizing-firm-mode) computes the largest lot size that respects both your risk-per-trade limit and the firm's drawdown cushion.
+
+See related: [consistency rule](/concepts/consistency-rule), [Firm Mode overview](/concepts/firm-mode).

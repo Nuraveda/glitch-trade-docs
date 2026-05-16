@@ -1,0 +1,53 @@
+---
+title: "Copy-trading policy"
+description: "How prop firms treat copy-trading across accounts — internal-copy (banned everywhere), external-copy from a master signal (permitted with conditions), and what Glitch Trade does + does not enable."
+---
+
+Copy-trading means replicating one account's trades on one or more other accounts. Every prop firm in the supported set has an explicit policy. The rules are easier to remember in three buckets.
+
+## Three categories
+
+### 1. Internal copy (same firm, multiple accounts)
+
+Running the same strategy on multiple accounts at the same firm to amplify a single signal. Detected via order-timing correlation across the operator's account IDs.
+
+**Universally banned.** Every firm in the supported set treats this as account fraud. Detected on the first significant payout review; both accounts are forfeited.
+
+### 2. Internal copy (different firms, same operator)
+
+Running the same strategy on accounts at FundingPips, FTMO, MFF simultaneously. Detected on order-timing across firms via IP, broker-side timestamps, and (rarely) signal-fingerprint analysis.
+
+**Permitted at most firms, with restrictions.** FTMO explicitly permits same-strategy across multiple FTMO accounts but limits scaling. Cross-firm internal copy is generally permitted because each firm enforces its own rules independently. The operator can lose any one account independently; can't be cross-disqualified.
+
+### 3. External copy (signal-provider model)
+
+A master account (yours or someone else's) emits signals; one or more accounts replicate. This is the "MQL5 signals" use case for MT4/MT5 and the standard cTrader cMirror flow.
+
+**Permitted at most firms with limits:**
+- **FTMO**: external-copy permitted; the master signal must not itself be banned (no copying from a HFT signal provider).
+- **FundingPips Zero**: permitted; consistency rule still applies to the copy account.
+- **The5ers**: permitted with disclosure on the copy account profile.
+- **Apex**: explicit restriction — copy-trading from non-Apex accounts requires manual review.
+- **MyForexFunds**: post-relaunch policy currently permissive; verify before scaling.
+- **GetLeveraged Turbo**: permitted with standard restrictions.
+
+## What Glitch Trade does + does not enable
+
+**Does:** Strategy IR + cBot/EA generation. The same strategy can be deployed to multiple accounts (your own, at different firms). Each deployment is independent — Glitch Trade orchestration doesn't fire a single signal across accounts.
+
+**Does not:** Build copy-trading-as-a-service. There's no master-signal account that other users subscribe to. The legal/regulatory burden of operating a copy-trading platform (especially for the EU's MiFID II rules) sits with platform operators like MQL5 Signals, eToro, ZuluTrade. We don't take that on.
+
+## Operator considerations
+
+If you're running the same strategy across multiple accounts at different firms:
+
+1. **Document the strategy as your own.** Each firm independently asks "did you develop this?" at payout review. Having a clear development trail (Glitch Trade IR history, backtest results, deployment log) protects against any one firm questioning the legitimacy.
+2. **Don't synchronise execution timestamps precisely.** Stagger entries by 30+ seconds where possible, so cross-firm timing analysis doesn't flag identical pattern.
+3. **Use different brokers per firm where possible.** Firms can't share IP/broker-timestamp data with each other (typically), so different brokers reduce cross-correlation signal.
+4. **Disclose if asked.** If a firm explicitly asks "do you have this strategy at other firms?", answer honestly. Lying at payout review is a faster disqualification than the original cross-firm setup.
+
+## What this policy is NOT solving
+
+It's not solving "I want to sell my signals to others." That's a copy-trading-platform business, not a prop-firm workflow. Use MQL5 Signals or cMirror for the master/follower model; use Glitch Trade for own-account automation.
+
+See related: [EA / cBot policy](/concepts/ea-rules), [strategies](/concepts/strategies).

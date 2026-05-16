@@ -1,0 +1,51 @@
+---
+title: "EA / cBot policy"
+description: "What each prop firm permits for Expert Advisors, cBots, and other automated trading. Universally banned classes, manual-review tiers, and how Glitch Trade-generated bots map to each firm's policy."
+---
+
+Every supported firm permits automated trading in some form, but the rules differ on which classes of EA / cBot are allowed without prior review. Three universal restrictions hold across the entire supported set; the remaining policy varies firm-by-firm.
+
+## Universal restrictions
+
+These are banned at every firm in the supported set, no exceptions:
+
+1. **Latency arbitrage.** Strategies that exploit price feed lag between the firm's broker and a faster reference quote. Detected on hold-time and entry-pricing signatures.
+2. **Tick scalping.** Hold times under 1 second on a sustained basis. Some firms count anything under 15 seconds; conservative interpretation = stay > 30 seconds.
+3. **Copy-trade internal.** Running the same EA across multiple accounts at the same firm to amplify a single signal. Detected on order-correlation across accounts.
+
+External copy from a master signal account is generally permitted; internal cross-account copying is not.
+
+## Per-firm policy table
+
+| Firm | Default policy | Review required | Notable restrictions |
+|---|---|---|---|
+| FundingPips Zero | Permitted | No prior review | Standard latency-arb + tick-scalp ban |
+| FTMO Phase 1 | Permitted | No prior review | Adds: "news-only" strategies disqualified at payout |
+| MyForexFunds | Permitted | No prior review | Same as FTMO post-relaunch |
+| Apex Trader Funding | Permitted | Manual review on size-anomaly | Per-trade size cap (30%) is hard rule |
+| The5ers High Stakes | Permitted | Scalp-class triggers review | Consistency rule + 50%-share cap |
+| GetLeveraged Turbo | Permitted | No prior review | Standard restrictions |
+
+## How Glitch Trade-generated bots map to policy
+
+Strategies authored on Glitch Trade compile to Strategy IR. From the IR we generate either a cTrader cBot (C#) or an MT4/MT5 EA (MQL4/MQL5). The generation process bakes in firm-specific safety:
+
+- **Hold-time enforcement.** The IR `schedule.minHoldSeconds` parameter defaults to 30 seconds — well clear of every firm's tick-scalp definition.
+- **News-blackout filter.** The IR `schedule.newsLockoutMinutes` filters entries around high-impact releases. Default 5 minutes; conservative across all firms. See [news blackouts](/concepts/news-blackouts).
+- **Position-size cap.** The IR enforces the firm-mode position-sizing rule (single loss ≤ ⅓ of DD cushion) at order placement, not just at backtest time.
+
+## What's NOT covered by automation
+
+- **Account-sharing detection.** Firms detect operators who run the same EA across two accounts at different firms via order timing + IP. The EA can't fix this — it's an operational discipline.
+- **Anomalous payout patterns.** If an EA delivers a 30R day on day 1 followed by 19 zero-trade days, firms manually review. The strategy might be fine; the review is unpredictable.
+- **EA code review at high-tier accounts.** Some firms (Apex on $250k+ accounts) require source-code review. Glitch Trade's generated cBot/EA source is readable and well-commented for this case.
+
+## Workflow
+
+1. Author the strategy as quick-rule, visual flow, or code on Glitch Trade.
+2. Run the firm-rule-aware backtest against your target firm.
+3. Export to cBot (cTrader) or EA (MQL4/MQL5) with the firm flag set.
+4. Deploy via your broker's standard EA-attach flow.
+5. Monitor via the Glitch Trade live dashboard for breach-distance + payout countdown.
+
+See related: [strategies](/concepts/strategies), [news blackouts](/concepts/news-blackouts), [broker bridge latency](/concepts/broker-bridge-latency).
