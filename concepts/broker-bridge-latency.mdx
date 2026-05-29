@@ -1,23 +1,23 @@
 ---
 title: "Broker bridge latency"
-description: "Round-trip latency from Glitch Trade to broker order acknowledgement across cTrader OAuth, TradeLocker REST, DXtrade, and MetaApi-bridged MT4/MT5. What matters for which strategy class."
+description: "Round-trip latency from Glitch Executor to broker order acknowledgement across cTrader OAuth, TradeLocker REST, DXtrade, and MetaApi-bridged MT4/MT5. What matters for which strategy class."
 ---
 
-Bridge latency is the time between Glitch Trade emitting an order intent and the broker acknowledging it. Round-trip (RTT) varies by execution path; the right path depends on the strategy class.
+Bridge latency is the time between Glitch Executor emitting an order intent and the broker acknowledging it. Round-trip (RTT) varies by execution path; the right path depends on the strategy class.
 
 ## Latency profile by path
 
 | Path | Typical RTT | Region variance | What's in the path |
 |---|---|---|---|
-| cTrader OpenAPI (OAuth) | 20–40 ms | ±15 ms regional | Glitch Trade → cTrader Open API → broker |
-| TradeLocker REST | 40–80 ms | ±20 ms | Glitch Trade → TradeLocker auth + REST → broker |
+| cTrader OpenAPI (OAuth) | 20–40 ms | ±15 ms regional | Glitch Executor → cTrader Open API → broker |
+| TradeLocker REST | 40–80 ms | ±20 ms | Glitch Executor → TradeLocker auth + REST → broker |
 | DXtrade REST | 50–90 ms | ±25 ms | Same shape as TradeLocker |
-| MT4/MT5 via MetaApi | 80–150 ms | ±50 ms (regional) | Glitch Trade → MetaApi → MetaApi MT terminal → broker |
+| MT4/MT5 via MetaApi | 80–150 ms | ±50 ms (regional) | Glitch Executor → MetaApi → MetaApi MT terminal → broker |
 | Broker-direct EA (VPS) | 5–15 ms | minimal | EA on same-region VPS → broker directly |
 
 ## Why MetaApi is slower
 
-MetaApi runs the MT4/MT5 terminal in their cloud. Your order has to travel from Glitch Trade → MetaApi → MetaApi's MT terminal → the broker. Every hop adds ~20–40 ms. The trade-off is operational simplicity: no VPS, no MT terminal to maintain, full API access to the MT account.
+MetaApi runs the MT4/MT5 terminal in their cloud. Your order has to travel from Glitch Executor → MetaApi → MetaApi's MT terminal → the broker. Every hop adds ~20–40 ms. The trade-off is operational simplicity: no VPS, no MT terminal to maintain, full API access to the MT account.
 
 ## When latency matters
 
@@ -33,13 +33,13 @@ For scalping strategies, 100 ms of latency on a fast-moving instrument can move 
 
 ## Regional considerations
 
-MetaApi's regional endpoints (us-east-1, eu-west-2, ap-southeast-1) determine baseline latency. Deploy Glitch Trade orchestration in the same region as both MetaApi and the broker for the lowest end-to-end RTT.
+MetaApi's regional endpoints (us-east-1, eu-west-2, ap-southeast-1) determine baseline latency. Deploy Glitch Executor orchestration in the same region as both MetaApi and the broker for the lowest end-to-end RTT.
 
 cTrader OpenAPI servers are clustered in EU; us-east clients see ~40–50 ms baseline; ap clients see 100+ ms. TradeLocker is hosted regionally with the broker so latency follows the broker's region, not TradeLocker's globally.
 
 ## How to measure
 
-The Glitch Trade dashboard exposes per-account bridge-latency metrics (95p RTT over the last hour). For a deep-dive:
+The Glitch Executor dashboard exposes per-account bridge-latency metrics (95p RTT over the last hour). For a deep-dive:
 
 1. Take 100 dummy entry-then-cancel orders during a normal market session.
 2. Record the timestamp of intent emission and broker acknowledgement.

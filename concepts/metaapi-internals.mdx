@@ -1,6 +1,6 @@
 ---
 title: "MetaApi internals"
-description: "What MetaApi actually does under the hood when Glitch Trade routes an MT4/MT5 order through it — regional endpoints, terminal lifecycle, failure modes, cost model."
+description: "What MetaApi actually does under the hood when Glitch Executor routes an MT4/MT5 order through it — regional endpoints, terminal lifecycle, failure modes, cost model."
 ---
 
 MetaApi is a cloud bridge for MT4/MT5 accounts. From the operator's perspective it's "API access to a broker that only exposes MT4 / MT5." From the platform side, MetaApi runs a managed MT terminal in their cloud and brokers your orders through it. Understanding the lifecycle matters for failure-mode planning.
@@ -12,9 +12,9 @@ When you connect an MT4/MT5 account via MetaApi:
 1. MetaApi spins up a managed MT4 or MT5 terminal in their cloud (regional — typically the closest of: us-east, eu-west, ap-southeast).
 2. The terminal logs in to your broker using your credentials (or refresh token).
 3. MetaApi exposes the terminal's state + order pipeline as a REST + WebSocket API.
-4. Glitch Trade orchestration calls the REST API; MetaApi forwards through the terminal to your broker.
+4. Glitch Executor orchestration calls the REST API; MetaApi forwards through the terminal to your broker.
 
-Net path: `Glitch Trade → MetaApi REST → MetaApi MT terminal → broker.`
+Net path: `Glitch Executor → MetaApi REST → MetaApi MT terminal → broker.`
 
 ## Regional endpoints
 

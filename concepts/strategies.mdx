@@ -1,9 +1,9 @@
 ---
 title: "Strategies"
-description: "How Glitch Trade represents the rules you author and runs them on your accounts."
+description: "How Glitch Executor represents the rules you author and runs them on your accounts."
 ---
 
-A **strategy** in Glitch Trade is a JSON document called a Strategy IR (intermediate representation). Every authoring surface — quick rule, visual builder, code editor — produces or consumes the same IR shape. The IR is what the backtester runs, what the compiler turns into a cBot, and what the marketplace lists.
+A **strategy** in Glitch Executor is a JSON document called a Strategy IR (intermediate representation). Every authoring surface — quick rule, visual builder, code editor — produces or consumes the same IR shape. The IR is what the backtester runs, what the compiler turns into a cBot, and what the marketplace lists.
 
 ## Where strategies come from
 
@@ -15,7 +15,7 @@ A **strategy** in Glitch Trade is a JSON document called a Strategy IR (intermed
     Drag indicator/entry/exit nodes onto a DAG. Compiled to IR on save. (Beta)
   </Card>
   <Card title="Code editor" icon="code">
-    Author cAlgo C# directly with Glitch Trade's SDK + firm-rule linter. (Pro+ tier)
+    Author cAlgo C# directly with Glitch Executor's SDK + firm-rule linter. (Pro+ tier)
   </Card>
 </CardGroup>
 
@@ -38,4 +38,4 @@ Marketplace ranking is **anti-self-report**: pass-rates are computed from the au
 
 ## What strategies are not
 
-A strategy is the rule, not the trade. Glitch Trade does not place trades on your account — the compiled cBot does, running on your machine or via cTrader Automate (later: MetaApi-hosted execution for MT4/MT5 accounts on Pro Quant). You stay in control of the execution path.
+A strategy is the rule, not the trade. Glitch Executor does not place trades on your account — the compiled cBot does, running on your machine or via cTrader Automate (later: MetaApi-hosted execution for MT4/MT5 accounts on Pro Quant). You stay in control of the execution path.

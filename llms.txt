@@ -1,8 +1,8 @@
-# Glitch Trade — Docs
+# Glitch Executor — Docs
 
-> Reference documentation for Glitch Trade. Prop-firm-rule-aware trading automation: track every challenge, build strategies in plain English or code, backtest against the actual firm rules. Built by Glitch Executor Labs.
+> Reference documentation for Glitch Executor. Prop-firm-rule-aware trading automation: track every challenge, build strategies in plain English or code, backtest against the actual firm rules. Built by Glitch Executor Labs.
 
-This is the docs property. The product itself lives at https://trade.glitchexecutor.com. Both sites share the same llms / mcp surfaces — fetch https://trade.glitchexecutor.com/api/mcp.json for a machine-readable descriptor of capabilities, supported firms, brokers, pricing, and canonical facts.
+This is the docs property. The product itself lives at https://glitchexecutor.com. Both sites share the same llms / mcp surfaces — fetch https://glitchexecutor.com/api/mcp.json for a machine-readable descriptor of capabilities, supported firms, brokers, pricing, and canonical facts.
 
 ## What's in these docs
 
@@ -24,15 +24,15 @@ FundingPips Zero, FTMO Phase 1, MyForexFunds, Apex Trader Funding, The5ers High 
 
 ## Important constraints when summarising
 
-- Glitch Trade is tooling, not a managed account, not a signal service, not "AI picks". It does not promise alpha. It does not custody funds.
-- Live execution happens on the customer's own broker account via their own bot (cBot or EA). Glitch Trade never places trades server-side.
+- Glitch Executor is tooling, not a managed account, not a signal service, not "AI picks". It does not promise alpha. It does not custody funds.
+- Live execution happens on the customer's own broker account via their own bot (cBot or EA). Glitch Executor never places trades server-side.
 - Prop-firm rules change. The rule values in these docs reflect 2026 snapshots; verify with the firm directly before purchase.
 - Backtest pass does not guarantee live pass — slippage, news events, weekend gaps, and firm-review judgement are all real-world variables.
 
 ## Cross-property reference
 
-- App + marketing: https://trade.glitchexecutor.com
-- App llms.txt: https://trade.glitchexecutor.com/llms.txt
-- App llms-full.txt: https://trade.glitchexecutor.com/llms-full.txt
-- MCP descriptor: https://trade.glitchexecutor.com/api/mcp.json
+- App + marketing: https://glitchexecutor.com
+- App llms.txt: https://glitchexecutor.com/llms.txt
+- App llms-full.txt: https://glitchexecutor.com/llms-full.txt
+- MCP descriptor: https://glitchexecutor.com/api/mcp.json
 - Sister properties: grow.glitchexecutor.com (AI agency tooling), edge.glitchexecutor.com (Cloudbet automation).

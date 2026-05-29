@@ -5,8 +5,8 @@
 
 ## About this project
 
-- This is the Mintlify-powered documentation site for **Glitch Trade**, the AI trading
-  automation platform at <https://trade.glitchexecutor.com>.
+- This is the Mintlify-powered documentation site for **Glitch Executor**, the AI trading
+  automation platform at <https://glitchexecutor.com>.
 - Pages are MDX files with YAML frontmatter.
 - Configuration lives in `docs.json`. Brand color is `#00d177` (emerald, matches the
   Cyber Cobra mascot). Don't drift the color without updating the SPA + marketing site
@@ -19,7 +19,7 @@
 | Repo | What | Touch from here? |
 |---|---|---|
 | `glitch-trade-api` | FastAPI backend | No — only consume the OpenAPI URL when API reference lands |
-| `glitch-trade-app` | React SPA at `trade.glitchexecutor.com` | No |
+| `glitch-trade-app` | React SPA at `glitchexecutor.com` | No |
 | `glitch-trade-core` | Backtest engine, Strategy IR, firm rule sets | No — but doc PRs may need to be paired with code PRs there |
 | `glitch-trade-docs` | **This repo** | Yes |
 
@@ -65,7 +65,7 @@ mirroring `glitch-edge-docs`'s setup.
 
 - No performance numbers, "X% returns", "guaranteed pass" language
 - No "AI picks" / signal-vendor framing
-- No "we trade for you" / managed-account framing — Glitch Trade is **tooling**
+- No "we trade for you" / managed-account framing — Glitch Executor is **tooling**
 
 ## Style
 

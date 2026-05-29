@@ -44,7 +44,7 @@ Keep position open through weekend with a stop-loss tightened to 1.5R of typical
 
 Open an offsetting position on a correlated instrument (long EURUSD + long DXY, for example) to flatten directional exposure across the weekend. Costs spread on both positions; eliminates gap risk.
 
-## How Glitch Trade encodes this
+## How Glitch Executor encodes this
 
 The Strategy IR has a `schedule.weekendFlat` boolean (default true). When true, the compiled cBot/EA closes all open positions by Friday 16:00 EST and refuses new entries after Friday 12:00 EST. Combine with `schedule.holidayFlat` to avoid holding through known market holidays (US Independence Day, UK Bank Holidays, etc.) where the same gap-risk logic applies.
 

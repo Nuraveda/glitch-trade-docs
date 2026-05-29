@@ -4,11 +4,11 @@ sidebarTitle: "MT4 / MT5 via MetaApi"
 description: "Bridges any MetaTrader broker through MetaApi.cloud — without us ever holding your MT credentials."
 ---
 
-MetaTrader 4 and MetaTrader 5 don't have public REST APIs. To bridge MT brokers (ICMarkets, Pepperstone, FTMO, MFF, GetLeveraged, etc.) into the Glitch Trade dashboard, we use **MetaApi.cloud** as the cloud gateway.
+MetaTrader 4 and MetaTrader 5 don't have public REST APIs. To bridge MT brokers (ICMarkets, Pepperstone, FTMO, MFF, GetLeveraged, etc.) into the Glitch Executor dashboard, we use **MetaApi.cloud** as the cloud gateway.
 
 ## Why this is the safest credentialed path
 
-You never hand your MT password to Glitch Trade. The connect flow:
+You never hand your MT password to Glitch Executor. The connect flow:
 
 1. You enter your MT login + password + broker server in our Connect dialog
 2. The platform forwards them **straight through to MetaApi.cloud** (no copy on our side)
@@ -55,6 +55,6 @@ security posture), not on our servers. We never see your MT password.
 
 Some prop firms (e.g. The5ers, Apex) only issue a master password and don't expose an
 investor password by default. In that case the master password is what you'll provide
-— Glitch Trade still doesn't trade on the account (we only call MetaApi's read-state
+— Glitch Executor still doesn't trade on the account (we only call MetaApi's read-state
 endpoints, not order-placement endpoints) but the safest theoretical posture isn't
 available until your broker exposes investor credentials.

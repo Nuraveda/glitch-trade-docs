@@ -1,8 +1,8 @@
 # glitch-trade-docs
 
-Mintlify-powered documentation site for **Glitch Trade**, the AI trading automation platform at <https://trade.glitchexecutor.com>.
+Mintlify-powered documentation site for **Glitch Executor**, the AI trading automation platform at <https://glitchexecutor.com>.
 
-Lives at <https://trade.glitchexecutor.com/docs> — same-origin under the Trade app, served via a Cloudflare Pages Function (`functions/docs/[[path]].ts` in `glitch-trade-app`) that proxies to the Mintlify origin `glitchexecutorlab.mintlify.dev`. Same-origin keeps analytics, cookies, and CSP trivial.
+Lives at <https://glitchexecutor.com/docs> — same-origin under the Trade app, served via a Cloudflare Pages Function (`functions/docs/[[path]].ts` in `glitch-trade-app`) that proxies to the Mintlify origin `glitchexecutorlab.mintlify.dev`. Same-origin keeps analytics, cookies, and CSP trivial.
 
 ## Local preview
 
@@ -24,7 +24,7 @@ See [`AGENTS.md`](AGENTS.md) for terminology, MDX/component preferences, and whi
 
 ## Companion repos
 
-- **`glitch-trade-app`** — the React SPA at <https://trade.glitchexecutor.com>
+- **`glitch-trade-app`** — the React SPA at <https://glitchexecutor.com>
 - **`glitch-trade-api`** — FastAPI backend
 - **`glitch-trade-core`** — backtest engine, IR layer, IR→C# compiler, firm rule sets
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
-  "name": "Glitch Trade",
+  "name": "Glitch Executor",
   "description": "Run, test, and track AI trading automation. Prop-firm challenge tracking included. Connect cTrader / TradeLocker / DXtrade / MT4·MT5 via MetaApi, author rules in plain English or code, backtest against firm-rule guardrails, deploy to your account.",
   "colors": {
     "primary": "#00d177",
@@ -12,7 +12,7 @@
   "logo": {
     "light": "/logos/glitch-trade.png",
     "dark":  "/logos/glitch-trade.png",
-    "href":  "https://trade.glitchexecutor.com/"
+    "href":  "https://glitchexecutor.com/"
   },
   "navigation": {
     "tabs": [
@@ -67,13 +67,13 @@
   },
   "navbar": {
     "links": [
-      { "label": "App",     "href": "https://trade.glitchexecutor.com/app" },
-      { "label": "Pricing", "href": "https://trade.glitchexecutor.com/pricing" }
+      { "label": "App",     "href": "https://glitchexecutor.com/app" },
+      { "label": "Pricing", "href": "https://glitchexecutor.com/pricing" }
     ],
     "primary": {
       "type":  "button",
       "label": "Open the app",
-      "href":  "https://trade.glitchexecutor.com/app"
+      "href":  "https://glitchexecutor.com/app"
     }
   },
   "footer": {

@@ -1,6 +1,6 @@
 ---
 title: "News blackouts"
-description: "Each prop firm's news-trading rule, the standard ±2 minute window interpretation, and how Glitch Trade's news-lockout filter enforces it across cBots, EAs, and live monitoring."
+description: "Each prop firm's news-trading rule, the standard ±2 minute window interpretation, and how Glitch Executor's news-lockout filter enforces it across cBots, EAs, and live monitoring."
 ---
 
 The news-blackout rule is the single most common cause of unforced disqualification. Operators don't intend to trade news; they have an unrelated position open when CPI prints; the rule fires; the account is gone.
@@ -28,7 +28,7 @@ The de facto standard across firms is the Forex Factory red-folder classificatio
 
 Some firms publish a calendar; most defer to Forex Factory's red-folder definition.
 
-## Implementation: how Glitch Trade enforces it
+## Implementation: how Glitch Executor enforces it
 
 The Strategy IR includes a `schedule.newsLockoutMinutes` parameter (default 5). When compiled to cBot or EA, the generated code:
 
@@ -44,7 +44,7 @@ The default 5-minute buffer covers all six firms safely (strict letter is ±2; t
 
 Most firms' news rules apply to the **currency** of the event, not the pair. A USD CPI release affects EURUSD, GBPUSD, USDJPY — every pair containing USD. It does not affect EURGBP.
 
-The Glitch Trade IR supports per-currency filtering: a strategy on EURGBP can stay active during USD CPI but flatten during ECB. The conservative default flattens everything during top-tier events (NFP, FOMC, CPI) and uses per-currency filtering for tier-2.
+The Glitch Executor IR supports per-currency filtering: a strategy on EURGBP can stay active during USD CPI but flatten during ECB. The conservative default flattens everything during top-tier events (NFP, FOMC, CPI) and uses per-currency filtering for tier-2.
 
 ## Calendar source reliability
 
@@ -54,10 +54,10 @@ A news-aware EA depends on the calendar source. Failure modes:
 - **Holiday-shifted events** — events that move (Bank of Japan announcements, in particular) may not be in the cached calendar.
 - **Tier-shift** — Forex Factory occasionally re-classifies an event between yellow and red; cached calendars miss the change.
 
-Mitigation: refresh the calendar daily, not weekly. The Glitch Trade IR refreshes at strategy start + at 00:00 UTC every day.
+Mitigation: refresh the calendar daily, not weekly. The Glitch Executor IR refreshes at strategy start + at 00:00 UTC every day.
 
 ## What this rule is NOT solving
 
-It's not solving "I want to trade news intentionally." That use case requires FTMO Phase 1 specifically (the only firm that permits it) plus careful attention to the "dominant source" payout review. See the blog post [News-lockout EAs: the firms that ban them and the workarounds that hold up](https://trade.glitchexecutor.com/blog/news-lockout-eas-firms-that-ban-them-workarounds).
+It's not solving "I want to trade news intentionally." That use case requires FTMO Phase 1 specifically (the only firm that permits it) plus careful attention to the "dominant source" payout review. See the blog post [News-lockout EAs: the firms that ban them and the workarounds that hold up](https://glitchexecutor.com/blog/news-lockout-eas-firms-that-ban-them-workarounds).
 
 See related: [EA / cBot policy](/concepts/ea-rules), [Firm Mode overview](/concepts/firm-mode), [strategies](/concepts/strategies).
