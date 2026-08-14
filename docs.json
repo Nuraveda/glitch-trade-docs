@@ -10,8 +10,8 @@
   },
   "favicon": "/favicon.png",
   "logo": {
-    "light": "/logos/glitch-trade.png",
-    "dark":  "/logos/glitch-trade.png",
+    "light": "/logos/ge-mark-light.png",
+    "dark":  "/logos/ge-mark-dark.png",
     "href":  "https://glitchexecutor.com/"
   },
   "navigation": {
